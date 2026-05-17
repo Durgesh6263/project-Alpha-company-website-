@@ -1,5 +1,32 @@
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
-body{background:#05070c;color:#fff}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
+}
+
+/* Prevent unwanted horizontal and secondary vertical scrollbars */
+html {
+  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background: #05070c;
+  color: #fff;
+}
+
+/* Prevent oversized media from breaking layout */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
 
 /* body::before{
 content:"";position:fixed;inset:0;
@@ -19,11 +46,13 @@ nav a{color:#cfd3ff;margin:0 12px;text-decoration:none}
 .secondary-btn{border:1px solid #2d325a;color:#fff} */
 
 /* HERO */
-.hero{text-align:center;padding:120px 20px}
-.hero h1{font-size:100px;font-weight:800}
+.hero{text-align:center;padding:clamp(60px, 8vw + 1rem, 130px) 20px}
+.hero h1{font-size:clamp(36px, 4vw + 1rem, 80px);font-weight:800;line-height:1.2;margin-bottom:15px}
 .hero h1 span{background:linear-gradient(150deg,#00c6ff,#7b61ff);
 -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{color:#b8c0ff;margin:20px auto;max-width:700px}
+.hero p{color:#b8c0ff;margin:20px auto;max-width:700px;font-size:clamp(16px, 2vw, 20px)}
+.hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+.hero-buttons .btn { margin-top: 0; }
 
 /* SECTIONS */
 .section{padding:40px 20px;text-align:center}
@@ -59,14 +88,15 @@ nav{display:none}
   top: 0;
   width: 100%;
   background: rgba(5,11,20,0.95);
-  backdrop-filter: blur(10px);
-  padding: 30px 80px;
+  backdrop-filter: blur(12px);
+  /* Uses max() to create a perfect 1200px max-width container without extra HTML divs */
+  padding: clamp(15px, 2vw, 20px) max(20px, calc(50vw - 600px));
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 999;
   transition: all 0.4s ease;
-
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .menu-toggle {
@@ -74,30 +104,56 @@ nav{display:none}
   font-size: 28px;
   cursor: pointer;
   color: white;
+  transition: color 0.3s ease;
 }
 
-#nav a {
-  margin-left: 25px;
-  color: white;
-  text-decoration: none;
-}
-
-#nav a.active {
+.menu-toggle:hover {
   color: #38bdf8;
 }
 
+#nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(15px, 2vw, 35px);
+}
+
+#nav a {
+  color: #cfd3ff;
+  text-decoration: none;
+  font-size: clamp(14px, 1vw + 0.5rem, 15px);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+#nav a:hover, #nav a.active {
+  color: #38bdf8;
+}
+
+/* Fix navbar button sizing */
+#nav a.btn {
+  margin-top: 0;
+  padding: 10px 24px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
 @media(max-width: 900px){
-  .menu-toggle { display:block; }
+  .menu-toggle { display: block; }
 
   #nav {
     position: absolute;
-    top: 70px;
-    right: 30px;
-    background: #0d1525;
-    padding: 20px;
-    border-radius: 15px;
+    top: calc(100% + 10px);
+    right: 20px;
+    background: #0a0e1a;
+    border: 1px solid rgba(0,198,255,0.15);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    padding: 20px 25px;
+    border-radius: 16px;
     display: none;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    min-width: 220px;
   }
 
   #nav.show {
@@ -105,17 +161,24 @@ nav{display:none}
   }
 
   #nav a {
-    margin: 12px 0;
+    width: 100%;
+  }
+
+  #nav a.btn {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
   }
 }
 
 body {
-  padding-top: 120px;
+  padding-top: 100px;
 }
 
 .navbar.shrink {
-  padding: 8px 80px;
+  padding: 10px max(20px, calc(50vw - 600px));
   background: rgba(5,11,20,0.98);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3);
 }
 
 
@@ -149,7 +212,7 @@ html {
 }
 .section-subtitle {
   color: #b8c0ff;
-  max-width: 720px;
+  max-width: min(100%, 720px);
   margin: 15px auto 60px;
 }
 
@@ -157,17 +220,16 @@ html {
 /* SERVICES PREMIUM LOOK */
 
 .services {
-  padding: 100px;
+  padding: clamp(50px, 8vw, 100px) clamp(15px, 4vw, 50px);
   background: transparent; /* page bg same rahega */
 }
 
 .services-grid {
  
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px,2fr));
-  gap: 75px;
-  padding-left: 80px;
-  padding-right: 80px;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap: clamp(30px, 6vw, 75px);
+  padding: 0 clamp(0px, 5vw, 80px);
   
 }
 
@@ -220,7 +282,7 @@ html {
 /* PORTFOLIO */
 
 .portfolio-section{
-  padding:120px 20px;
+  padding:clamp(60px, 10vw, 120px) 20px;
   text-align:center;
 }
 
@@ -233,7 +295,7 @@ html {
 }
 
 .portfolio-title{
-  font-size:46px;
+  font-size:clamp(32px, 6vw, 46px);
   font-weight:800;
   margin:10px 0;
   text-align:center;
@@ -419,7 +481,7 @@ html {
 }
 
 .testimonial-title{
-  font-size:48px;
+  font-size:clamp(32px, 6vw, 48px);
   font-weight:800;
   margin:12px 0;
 }
@@ -441,7 +503,7 @@ html {
   );
   border:1px solid rgba(0,198,255,.3);
   border-radius:28px;
-  padding:70px 80px;
+  padding:clamp(40px, 8vw, 70px) clamp(25px, 6vw, 80px);
   backdrop-filter:blur(14px);
   position:relative;
   box-shadow:0 0 80px rgba(0,198,255,.15);
@@ -548,7 +610,7 @@ html {
 }
 
 .contact-title{
-  font-size:48px;
+  font-size:clamp(32px, 6vw, 48px);
   font-weight:800;
   margin:12px 0;
 }
@@ -563,7 +625,7 @@ html {
 .contact-grid{
   display:grid;
   grid-template-columns:1fr 1.2fr;
-  gap:50px;
+  gap:clamp(30px, 4vw, 50px);
   max-width:1200px;
   margin:auto;
 }
@@ -572,7 +634,7 @@ html {
 
 .contact-info{
   background:#0a0e1a;
-  padding:50px;
+  padding:clamp(30px, 6vw, 50px);
   border-radius:26px;
   text-align:left;
 }
@@ -612,13 +674,14 @@ html {
 .quick-contact p{
   color:#9aa3ff;
   margin-bottom:6px;
+  word-break: break-word;
 }
 
 /* Form Box */
 
 .contact-form{
   background:#0a0e1a;
-  padding:50px;
+  padding:clamp(30px, 6vw, 50px);
   border-radius:26px;
   text-align:left;
 }
@@ -799,8 +862,8 @@ textarea.success {
 
 .page-title {
   text-align: center;
-  font-size: 46px;
-  margin-bottom: 70px;
+  font-size: clamp(32px, 6vw, 46px);
+  margin-bottom: clamp(40px, 8vw, 70px);
 }
 
 .projects-grid {
@@ -938,18 +1001,60 @@ body{
  font-family:Arial, sans-serif;
 }
 
-.navbarproject{
- position:fixed;
- top:0;
- width:100%;
- padding:18px 80px;
- display:flex;
- justify-content:space-between;
- background:#050b14;
- z-index:999;
+.navbarproject {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(5,11,20,0.95);
+  backdrop-filter: blur(12px);
+  padding: clamp(15px, 2vw, 20px) max(20px, calc(50vw - 600px));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-wrap: wrap;
 }
 
-.navbar a{color:white;margin-left:20px;text-decoration:none}
+.navbarproject nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 30px);
+  flex-wrap: wrap;
+}
+
+.navbarproject nav a {
+  color: #cfd3ff;
+  text-decoration: none;
+  font-size: clamp(14px, 1vw + 0.5rem, 15px);
+  font-weight: 500;
+  transition: color 0.3s ease;
+  margin-left: 0;
+}
+
+.navbarproject nav a:hover {
+  color: #38bdf8;
+}
+
+.navbarproject .logo {
+  font-size: clamp(18px, 1.5vw + 0.5rem, 24px);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg,#00c6ff,#7b61ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media(max-width: 600px) {
+  .navbarproject {
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 15px;
+  }
+  .navbarproject nav {
+    justify-content: center;
+  }
+}
 
 .case-page{padding-top:90px}
 
@@ -1325,10 +1430,10 @@ body{
 =========================== */
 
 .main-footer {
-  margin-top: 120px;
+  margin-top: clamp(60px, 10vw, 120px);
   background: linear-gradient(180deg, #050b14, #070c16);
   border-top: 1px solid rgba(0,198,255,0.15);
-  padding: 80px 20px 30px;
+  padding: clamp(40px, 8vw, 80px) 20px 30px;
 }
 
 .footer-container {
@@ -1336,8 +1441,8 @@ body{
   margin: auto;
   margin-bottom: 0%;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-  gap: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(30px, 5vw, 50px);
 }
 
 /* Brand */
